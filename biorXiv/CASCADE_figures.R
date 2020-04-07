@@ -11,6 +11,9 @@
 
 # set up environment
 rm(list=ls())
+
+# set up environment
+rm(list=ls())
 library(ggplot2)
 library(ggseqlogo)
 library(RColorBrewer)
@@ -553,7 +556,14 @@ SNP_screen <- SNP_screen[which(SNP_screen$SNP_cat != "bg_SNP"), ]
 
 # determine the PBM_colors based on the SNP categories
 PBM_colors <- brewer.pal(6, "Set2")
-PBM_colors <- PBM_colors[c(1, 3:6)]
+PBM_colors <- PBM_colors[c(1, 3:6)] # 2 was previously used to inspect background category
+
+# modify the levels of SNP_cat
+SNP_screen$SNP_cat <- factor(SNP_screen$SNP_cat, levels = c("basal_eQTL",
+                                                            "caQTL_eQTL",
+                                                            "GWAS_caQTL",
+                                                            "GWAS_eQTL",
+                                                            "resp_eQTL"))
 
 # scale transformation function for rounding axes
 scaleFUN <- function(x) sprintf("%.1f", x)
@@ -641,6 +651,13 @@ for (i in 1:length(PBM_cond)) {
                        SNP_screen[which(SNP_screen$PBM_exp==PBM_cond[j]), "neg_log10_qval"])
     names(g_df) <- c("SNP_id", "SNP_cat", "yval", "xval")
     
+    # manually determine the legend order and associated colors for the SNP_cat
+    g_df$SNP_cat <- factor(g_df$SNP_cat, levels = c("basal_eQTL",
+                                                    "caQTL_eQTL",
+                                                    "GWAS_caQTL",
+                                                    "GWAS_eQTL",
+                                                    "resp_eQTL"))
+    
     # declare a plot variable for the current scatter. Needs to be done this way because of cowplot
     ggp <- ggplot(g_df, aes(y=yval, x=xval, color=SNP_cat)) +
       geom_point(size=1.5) + scale_color_manual(values=PBM_colors) +
@@ -696,7 +713,6 @@ SNP_screen <- SNP_screen[which(SNP_screen$SNP_cat != "bg_SNP"), ]
 PBM_colors <- brewer.pal(6, "Set2")
 PBM_colors <- PBM_colors[c(1, 3:6)]
 
-
 # scale transformation function for rounding axes
 scaleFUN <- function(x) sprintf("%.1f", x)
 
@@ -710,6 +726,13 @@ for (i in 1:length(PBM_cond)) {
                        SNP_screen[which(SNP_screen$PBM_exp==PBM_cond[i]), "neg_log10_qval"],
                        SNP_screen[which(SNP_screen$PBM_exp==PBM_cond[j]), "neg_log10_qval"])
     names(g_df) <- c("SNP_id", "SNP_cat", "yval", "xval")
+    
+    # manually determine the legend order and associated colors for the SNP_cat
+    g_df$SNP_cat <- factor(g_df$SNP_cat, levels = c("basal_eQTL",
+                                                    "caQTL_eQTL",
+                                                    "GWAS_caQTL",
+                                                    "GWAS_eQTL",
+                                                    "resp_eQTL"))
     
     # declare a plot variable for the current scatter. Needs to be done this way because of cowplot
     ggp <- ggplot(g_df, aes(y=yval, x=xval, color=SNP_cat)) +
@@ -1425,5 +1448,3 @@ if (length(motif_files)>0) {
   close(meme_file)
   
 }
-
-
