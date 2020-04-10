@@ -37,6 +37,6 @@ NOTE: make sure you are running the Rscript command from the directory that cont
 ## Results
 Once the script has finished running, there should be 3 additional directories each containing data and plots related to the indicated figure:
 
-![New directories generated](new_directories.png)
+![New directories generated](new_directories.PNG?raw=true)
 
 You're now ready to explore the data and plots used for the CASCADE paper!
